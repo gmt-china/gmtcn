@@ -4,7 +4,7 @@ if [ $# -eq 0 ]; then
 cat << EOF >&2
 
     gmtcn - Show Chinese HTML documentation of GMT's specified module. 
-    (c) Mao Zhou (https://github.com/ZMAlt)
+    Mao Zhou (https://github.com/ZMAlt)
 
  Usage: 
     gmtcn docs home
