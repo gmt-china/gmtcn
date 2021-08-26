@@ -13,7 +13,7 @@ bash gmtcn.sh docs [option]
 $ gmtcn                  
 
     gmtcn - Show Chinese HTML documentation of GMT's specified module. 
-    (c) Mao Zhou (https://github.com/ZMAlt)
+    Mao Zhou (https://github.com/ZMAlt)
 
  Usage: 
     gmtcn docs home
@@ -51,3 +51,7 @@ $ gmtcn
 3. 除模块外，还可以打开选项，投影，配置参数，安装，画笔，单位等中文手册章节，包括具体的选项和投影
 4. 模块只包括已翻译的模块，未翻译的模块并不会自动跳转
 5. 打开模块章节并不能直接定位对应的选项，需手动查找
+
+## 其他事项
+
+本脚本主要为方便本人使用 gmt 所写，所有人均可随意使用并改动。
