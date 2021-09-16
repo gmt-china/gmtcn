@@ -64,6 +64,10 @@ in
         open ${http}${2}
         exit
         ;;
+    setting)
+    	open ${http}"conf"
+	exit
+	;;
     gallery)
         open ${http}"examples"
         exit
