@@ -14,7 +14,7 @@ cat << EOF >&2
     gmtcn docs <proj-name>
     gmtcn docs <setting-name>
 
-    gmtcn <other>
+    gmtcn docs <other>
 
  Module-name:
     All translated GMT module 
@@ -32,7 +32,7 @@ cat << EOF >&2
     module option proj setting gallery
     install started advanced 
     table grid cpt dataset chinese api
-    media unit color pen fill font char latex vector line anchor panel
+    canvas unit color pen fill font char latex vector line anchor panel dir
 
 EOF
 	exit
@@ -127,8 +127,8 @@ if [ ! x"$J" = x ]; then
 fi
 
 # basic
-basic=( media unit color pen fill font char latex arrow line anchor panel )
-basic_parse=(paper unit color pen fill text special-character latex vector line anchor embellishment)
+basic=( canvas unit color pen fill font char latex arrow line anchor panel dir )
+basic_parse=(canvas unit color pen fill text special-character latex vector line anchor embellishment input-files)
 for i in ${!basic[@]}
 do
     if [ ${2} = ${basic[$i]} ]; then
