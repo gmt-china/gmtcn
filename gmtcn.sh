@@ -7,7 +7,7 @@ cat << EOF >&2
     gmtcn - Show Chinese HTML documentation of GMT's specified module. 
     GMT 中文社区 (https://gmt-china.org/)
 
- Usages: 
+ Usage: 
     gmtcn docs home
 
     gmtcn docs <module-name> 
