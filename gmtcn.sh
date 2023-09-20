@@ -58,6 +58,8 @@ if [ ${sys} = "Linux" ] ; then
     ${open_command} --version > /dev/null || echo -e "\n\033[31m ERROR: ${open_command} does not exist. \033[0m"
 elif [ ${sys} = "Darwin" ] ; then
     open_command=open
+elif [ ${sys} = *MIGW64* ] ; then
+    open_command=start
 else
     echo -e "\n\033[31m ERROR: ${sys} is not recognized or supported. \033[0m"
     exit
