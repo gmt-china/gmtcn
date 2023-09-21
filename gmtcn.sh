@@ -54,12 +54,12 @@ fi
 # system
 sys=$(uname)
 if [ ${sys} = "Linux" ] ; then
-    open_command=xdg-open
-    ${open_command} --version > /dev/null || echo -e "\n\033[31m ERROR: ${open_command} does not exist. \033[0m"
+    open=xdg-open
+    ${open} --version > /dev/null || echo -e "\n\033[31m ERROR: ${open} does not exist. \033[0m"
 elif [ ${sys} = "Darwin" ] ; then
-    open_command=open
-elif [ ${sys} = *MIGW64* ] ; then
-    open_command=start
+    open=open
+elif [ ${sys} = *MINGW64* ] ; then
+    open=start
 else
     echo -e "\n\033[31m ERROR: ${sys} is not recognized or supported. \033[0m"
     exit
@@ -73,23 +73,23 @@ opt=""
 case $2
 in
     home)    
-        ${open_command} ${http}
+        ${open} ${http}
         exit
         ;;
     module|option|proj|conf|install|table|grid|cpt|dataset|chinese|api)
-        ${open_command} ${http}${2}
+        ${open} ${http}${2}
         exit
         ;;
     setting)
-    	${open_command} ${http}"conf"
-	exit
+        ${open} ${http}"conf"
+        exit
 	;;
     gallery)
-        ${open_command} ${http}"examples"
+        ${open} ${http}"examples"
         exit
         ;;
     started|advanced)
-        ${open_command} ${http}"tutorial/"${2}
+        ${open} ${http}"tutorial/"${2}
         exit
         ;;
     -J)    
@@ -112,7 +112,7 @@ if [ ! x"$opt" = x ]; then
     do
 
         if [ ${opt} = ${option[$i]} ]; then
-            ${open_command} ${http}"option/"${option_parse[$i]}
+            ${open} ${http}"option/"${option_parse[$i]}
             exit
         else 
             if [ $(($i+1)) -eq ${#option[@]} ]; then
@@ -130,7 +130,7 @@ if [ ! x"$J" = x ]; then
     for i in ${!proj[@]}
     do
         if [ ${J} = ${proj[$i]} ]; then
-            ${open_command} ${http}"proj/"${proj_parse[$i]}
+            ${open} ${http}"proj/"${proj_parse[$i]}
             exit
         else 
             if [ $(($i+1)) -eq ${#proj[@]} ]; then
@@ -148,7 +148,7 @@ basic_parse=(canvas unit color pen fill text special-character latex vector line
 for i in ${!basic[@]}
 do
     if [ ${2} = ${basic[$i]} ]; then
-        ${open_command} ${http}"basis/"${basic_parse[$i]}
+        ${open} ${http}"basis/"${basic_parse[$i]}
         exit
     fi
 done 
@@ -159,7 +159,7 @@ setting_parse=(font map color dir format io proj ps time misc)
 for i in ${!setting[@]}
 do
     if [ ${2} = ${setting[$i]} ]; then
-        ${open_command} ${http}"conf/"${setting_parse[$i]}
+        ${open} ${http}"conf/"${setting_parse[$i]}
         exit
     fi
 done 
@@ -169,7 +169,7 @@ module=( `gmt --show-modules ` )
 for i in ${!module[@]}
 do
     if [ ${2} = ${module[$i]} ]; then
-        ${open_command} ${http}"module/"${2}
+        ${open} ${http}"module/"${2}
         exit
     else 
         if [ $(($i+1)) -eq ${#module[@]} ]; then
