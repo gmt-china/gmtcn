@@ -4,21 +4,21 @@
 if [ $# -eq 0 ]; then
 cat << EOF >&2
 
-    gmtcn - Show Chinese HTML documentation of GMT's specified module. 
+    gmtcn - Show Chinese HTML documentation of GMT's specified module.
     GMT 中文社区 (https://gmt-china.org/)
 
- Usage: 
+ Usage:
     gmtcn docs home
 
-    gmtcn docs <module-name> 
-    gmtcn docs <option-name> 
+    gmtcn docs <module-name>
+    gmtcn docs <option-name>
     gmtcn docs <proj-name>
     gmtcn docs <setting-name>
 
     gmtcn docs <other>
 
  Module-name:
-    All translated GMT module 
+    All translated GMT module
 
  Option-name:
     -B -R -J -x -a -:   ...
@@ -27,11 +27,11 @@ cat << EOF >&2
     -JP -JX -JQ  ...
 
  Setting-name:
-    FONT MAP COLOR DIR FORMAT IO PROJ PS TIME OTHER 
+    FONT MAP COLOR DIR FORMAT IO PROJ PS TIME OTHER
 
  Other:
     module option proj setting gallery
-    install started advanced 
+    install started advanced
     table grid cpt dataset chinese api
     canvas unit color pen fill font char latex vector line anchor panel dir
 
@@ -66,42 +66,42 @@ else
 fi
 
 
-http=https://docs.gmt-china.org/latest/
+baseurl=https://docs.gmt-china.org/latest
 
 J=""
 opt=""
 case $2
 in
-    home)    
-        ${open} ${http}
+    home)
+        ${open} ${baseurl}
         exit
         ;;
     module|option|proj|conf|install|table|grid|cpt|dataset|chinese|api)
-        ${open} ${http}${2}
+        ${open} "${baseurl}/${2}"
         exit
         ;;
     setting)
-        ${open} ${http}"conf"
+        ${open} "${baseurl}/conf"
         exit
 	;;
     gallery)
-        ${open} ${http}"examples"
+        ${open} "${baseurl}/examples"
         exit
         ;;
     started|advanced)
-        ${open} ${http}"tutorial/"${2}
+        ${open} "${baseurl}/tutorial/${2}"
         exit
         ;;
-    -J)    
+    -J)
         opt=$2
         ;;
-    -J*)    
+    -J*)
         J=$2
         ;;
-    -*)     
+    -*)
         opt=$2
         ;;
-    *)		
+    *)
         ;;
 esac
 
@@ -112,16 +112,16 @@ if [ ! x"$opt" = x ]; then
     do
 
         if [ ${opt} = ${option[$i]} ]; then
-            ${open} ${http}"option/"${option_parse[$i]}
+            ${open} "${baseurl}/option/${option_parse[$i]}"
             exit
-        else 
+        else
             if [ $(($i+1)) -eq ${#option[@]} ]; then
                 echo -e "\n\033[31m ERROR: No option named ${2} is found. \033[0m"
                 bash ${0}
                 exit
             fi
         fi
-    done 
+    done
 fi
 
 proj=(-JX -JP -JA -JB -JC -JCyl_stere -JD -JE -JF -JG -JH -JI -JJ -JK -JL -JM -JN -JO -JPoly -JQ -JR -JS -JT -JU -JV -JW -JY)
@@ -130,16 +130,16 @@ if [ ! x"$J" = x ]; then
     for i in ${!proj[@]}
     do
         if [ ${J} = ${proj[$i]} ]; then
-            ${open} ${http}"proj/"${proj_parse[$i]}
+            ${open} "${baseurl}/proj/${proj_parse[$i]}"
             exit
-        else 
+        else
             if [ $(($i+1)) -eq ${#proj[@]} ]; then
                 echo -e "\n\033[31m ERROR: No projection named ${2} is found. \033[0m"
                 bash ${0}
                 exit
             fi
         fi
-    done 
+    done
 fi
 
 # basic
@@ -148,10 +148,10 @@ basic_parse=(canvas unit color pen fill text special-character latex vector line
 for i in ${!basic[@]}
 do
     if [ ${2} = ${basic[$i]} ]; then
-        ${open} ${http}"basis/"${basic_parse[$i]}
+        ${open} "${baseurl}/basis/${basic_parse[$i]}"
         exit
     fi
-done 
+done
 
 # setting
 setting=(FONT MAP COLOR DIR FORMAT IO PROJ PS TIME OTHER)
@@ -159,23 +159,23 @@ setting_parse=(font map color dir format io proj ps time misc)
 for i in ${!setting[@]}
 do
     if [ ${2} = ${setting[$i]} ]; then
-        ${open} ${http}"conf/"${setting_parse[$i]}
+        ${open} "${baseurl}/conf/${setting_parse[$i]}"
         exit
     fi
-done 
+done
 
-# module 
+# module
 module=( `gmt --show-modules ` )
 for i in ${!module[@]}
 do
     if [ ${2} = ${module[$i]} ]; then
-        ${open} ${http}"module/"${2}
+        ${open} "${baseurl}/module/${2}"
         exit
-    else 
+    else
         if [ $(($i+1)) -eq ${#module[@]} ]; then
             echo -e "\n\033[31m ERROR: No model named ${2} is found. \033[0m"
             bash ${0}
             exit
         fi
     fi
-done 
+done
