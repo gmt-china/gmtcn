@@ -1,10 +1,11 @@
 #!/bin/bash
 
+# usage
 if [ $# -eq 0 ]; then
 cat << EOF >&2
 
     gmtcn - Show Chinese HTML documentation of GMT's specified module. 
-    Mao Zhou (https://github.com/ZMAlt)
+    GMT 中文社区 (https://gmt-china.org/)
 
  Usage: 
     gmtcn docs home
@@ -38,9 +39,9 @@ EOF
 	exit
 fi
 
-
+# Arguments check
 if [ ${1} != "docs" ]; then
-    echo -e "\033[31m ERROR: \033[0m"
+    echo -e "\n\033[31m ERROR: ${1} is not recognized or supprted. \033[0m"
     bash ${0}
     exit
 fi
@@ -50,6 +51,21 @@ if [ ! -n "${2}" ]; then
     exit
 fi
 
+# system
+sys=$(uname)
+if [ ${sys} = "Linux" ] ; then
+    open=xdg-open
+    ${open} --version > /dev/null || echo -e "\n\033[31m ERROR: ${open} does not exist. \033[0m"
+elif [ ${sys} = "Darwin" ] ; then
+    open=open
+elif [ ${sys} = *MINGW64* ] ; then
+    open=start
+else
+    echo -e "\n\033[31m ERROR: ${sys} is not recognized or supported. \033[0m"
+    exit
+fi
+
+
 http=https://docs.gmt-china.org/latest/
 
 J=""
@@ -57,23 +73,23 @@ opt=""
 case $2
 in
     home)    
-        open ${http}
+        ${open} ${http}
         exit
         ;;
     module|option|proj|conf|install|table|grid|cpt|dataset|chinese|api)
-        open ${http}${2}
+        ${open} ${http}${2}
         exit
         ;;
     setting)
-    	open ${http}"conf"
-	exit
+        ${open} ${http}"conf"
+        exit
 	;;
     gallery)
-        open ${http}"examples"
+        ${open} ${http}"examples"
         exit
         ;;
     started|advanced)
-        open ${http}"tutorial/"${2}
+        ${open} ${http}"tutorial/"${2}
         exit
         ;;
     -J)    
@@ -96,11 +112,11 @@ if [ ! x"$opt" = x ]; then
     do
 
         if [ ${opt} = ${option[$i]} ]; then
-            open ${http}"option/"${option_parse[$i]}
+            ${open} ${http}"option/"${option_parse[$i]}
             exit
         else 
             if [ $(($i+1)) -eq ${#option[@]} ]; then
-                echo -e "\033[31m ERROR: \033[0m"
+                echo -e "\n\033[31m ERROR: No option named ${2} is found. \033[0m"
                 bash ${0}
                 exit
             fi
@@ -114,11 +130,11 @@ if [ ! x"$J" = x ]; then
     for i in ${!proj[@]}
     do
         if [ ${J} = ${proj[$i]} ]; then
-            open ${http}"proj/"${proj_parse[$i]}
+            ${open} ${http}"proj/"${proj_parse[$i]}
             exit
         else 
             if [ $(($i+1)) -eq ${#proj[@]} ]; then
-                echo -e "\033[31m ERROR: \033[0m"
+                echo -e "\n\033[31m ERROR: No projection named ${2} is found. \033[0m"
                 bash ${0}
                 exit
             fi
@@ -132,7 +148,7 @@ basic_parse=(canvas unit color pen fill text special-character latex vector line
 for i in ${!basic[@]}
 do
     if [ ${2} = ${basic[$i]} ]; then
-        open ${http}"basis/"${basic_parse[$i]}
+        ${open} ${http}"basis/"${basic_parse[$i]}
         exit
     fi
 done 
@@ -143,7 +159,7 @@ setting_parse=(font map color dir format io proj ps time misc)
 for i in ${!setting[@]}
 do
     if [ ${2} = ${setting[$i]} ]; then
-        open ${http}"conf/"${setting_parse[$i]}
+        ${open} ${http}"conf/"${setting_parse[$i]}
         exit
     fi
 done 
@@ -153,11 +169,11 @@ module=( `gmt --show-modules ` )
 for i in ${!module[@]}
 do
     if [ ${2} = ${module[$i]} ]; then
-        open ${http}"module/"${2}
+        ${open} ${http}"module/"${2}
         exit
     else 
         if [ $(($i+1)) -eq ${#module[@]} ]; then
-            echo -e "\033[31m ERROR: \033[0m"
+            echo -e "\n\033[31m ERROR: No model named ${2} is found. \033[0m"
             bash ${0}
             exit
         fi
