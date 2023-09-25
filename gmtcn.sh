@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# usage
-if [ $# -eq 0 ]; then
-cat << EOF >&2
-
-    gmtcn - Show Chinese HTML documentation of GMT's specified module.
-    GMT 中文社区 (https://gmt-china.org/)
+function usage () {
+cat <<-EOF >&2
+gmtcn - Show Chinese HTML documentation of GMT's specified module.
+GMT 中文社区 (https://gmt-china.org/)
 
  Usage:
     gmtcn docs home
@@ -34,21 +32,23 @@ cat << EOF >&2
     install started advanced
     table grid cpt dataset chinese api
     canvas unit color pen fill font char latex vector line anchor panel dir
-
 EOF
-	exit
+exit
+}
+
+# usage
+if [ $# -eq 0 ]; then
+    usage
 fi
 
 # Arguments check
 if [ ${1} != "docs" ]; then
     echo -e "\n\033[31m ERROR: ${1} is not recognized or supprted. \033[0m"
-    bash ${0}
-    exit
+    usage
 fi
 
 if [ ! -n "${2}" ]; then
-    bash ${0}
-    exit
+    usage
 fi
 
 # system
@@ -83,7 +83,7 @@ in
     setting)
         ${open} "${baseurl}/conf"
         exit
-	;;
+        ;;
     gallery)
         ${open} "${baseurl}/examples"
         exit
@@ -117,8 +117,7 @@ if [ ! x"$opt" = x ]; then
         else
             if [ $(($i+1)) -eq ${#option[@]} ]; then
                 echo -e "\n\033[31m ERROR: No option named ${2} is found. \033[0m"
-                bash ${0}
-                exit
+                usage
             fi
         fi
     done
@@ -135,8 +134,7 @@ if [ ! x"$J" = x ]; then
         else
             if [ $(($i+1)) -eq ${#proj[@]} ]; then
                 echo -e "\n\033[31m ERROR: No projection named ${2} is found. \033[0m"
-                bash ${0}
-                exit
+                usage
             fi
         fi
     done
@@ -174,8 +172,7 @@ do
     else
         if [ $(($i+1)) -eq ${#module[@]} ]; then
             echo -e "\n\033[31m ERROR: No model named ${2} is found. \033[0m"
-            bash ${0}
-            exit
+            usage
         fi
     fi
 done
