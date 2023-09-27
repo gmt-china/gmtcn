@@ -169,6 +169,9 @@ do
     if [ ${2} = ${module[$i]} ]; then
         ${open} "${baseurl}/module/${2}"
         exit
+    elif [ "gmt${2}" = ${module[$i]} ]; then
+        ${open} "${baseurl}/module/gmt${2}"
+        exit
     else
         if [ $(($i+1)) -eq ${#module[@]} ]; then
             echo -e "\n\033[31m ERROR: No model named ${2} is found. \033[0m"
