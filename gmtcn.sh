@@ -85,7 +85,7 @@ in
         exit
         ;;
     gallery)
-        ${open} "${baseurl}/examples"
+        ${open} "${baseurl}/gallery"
         exit
         ;;
     started|advanced)
