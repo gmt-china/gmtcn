@@ -140,8 +140,10 @@ if [[ -n $opt && ${option_mapping[$opt]+_} ]]; then
     ${open} "${baseurl}/option/${option_mapping[$opt]}"
     exit
 else
-    echo -e "\n\033[31m ERROR: No option named ${opt} is found. \033[0m"
-    usage
+    if [ ! x"$opt" = x ]; then
+        echo -e "\n\033[31m ERROR: No option named ${opt} is found. \033[0m"
+        usage
+    fi
 fi
 
 proj=(-JX -JP -JA -JB -JC -JCyl_stere -JD -JE -JF -JG -JH -JI -JJ -JK -JL -JM -JN -JO -JPoly -JQ -JR -JS -JT -JU -JV -JW -JY)
