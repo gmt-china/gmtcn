@@ -146,59 +146,95 @@ else
     fi
 fi
 
-proj=(-JX -JP -JA -JB -JC -JCyl_stere -JD -JE -JF -JG -JH -JI -JJ -JK -JL -JM -JN -JO -JPoly -JQ -JR -JS -JT -JU -JV -JW -JY)
-proj_parse=(Jx Jp Ja Jb Jc Jcyl_stere Jd Je Jf Jg Jh Ji Jj Jk Jl Jm Jn Jo Jpoly Jq Jr Js Jt Ju Jv Jw Jy)
-if [ ! x"$J" = x ]; then
-    for i in ${!proj[@]}
-    do
-        if [ ${J} = ${proj[$i]} ]; then
-            ${open} "${baseurl}/proj/${proj_parse[$i]}"
-            exit
-        else
-            if [ $(($i+1)) -eq ${#proj[@]} ]; then
-                echo -e "\n\033[31m ERROR: No projection named ${2} is found. \033[0m"
-                usage
-            fi
-        fi
-    done
+# Mapping projections to the corresponding URL
+declare -A proj_mapping=(
+    [-JX]=Jx
+    [-JP]=Jp
+    [-JA]=Ja
+    [-JB]=Jb
+    [-JC]=Jc
+    [-JCyl_stere]=Jcyl_stere
+    [-JD]=Jd
+    [-JE]=Je
+    [-JF]=Jf
+    [-JG]=Jg
+    [-JH]=Jh
+    [-JI]=Ji
+    [-JJ]=Jj
+    [-JK]=Jk
+    [-JL]=Jl
+    [-JM]=Jm
+    [-JN]=Jn
+    [-JO]=Jo
+    [-JPoly]=Jpoly
+    [-JQ]=Jq
+    [-JR]=Jr
+    [-JS]=Js
+    [-JT]=Jt
+    [-JU]=Ju
+    [-JV]=Jv
+    [-JW]=Jw
+    [-JY]=Jy
+)
+
+if [[ -n $J && ${proj_mapping[$J]+_} ]]; then
+    ${open} "${baseurl}/proj/${proj_mapping[$J]}"
+    exit
+else
+    if [ ! x"$J" = x ]; then
+        echo -e "\n\033[31m ERROR: No projection named ${J} is found. \033[0m"
+        usage
+    fi
 fi
 
-# basic
-basic=( canvas unit color pen fill font char latex arrow line anchor panel dir )
-basic_parse=(canvas unit color pen fill text special-character latex vector line anchor embellishment input-files)
-for i in ${!basic[@]}
-do
-    if [ ${2} = ${basic[$i]} ]; then
-        ${open} "${baseurl}/basis/${basic_parse[$i]}"
-        exit
-    fi
-done
+# Mapping basic to the corresponding URL
+declare -A basic_mapping=(
+    [canvas]=canvas
+    [unit]=unit
+    [color]=color
+    [pen]=pen
+    [fill]=text
+    [font]=special-character
+    [char]=vector
+    [latex]=latex
+    [arrow]=line
+    [line]=anchor
+    [anchor]=embellishment
+    [panel]=input-files
+    [dir]=dir
+)
+if [[ -n $2 && ${basic_mapping[$2]+_} ]]; then
+    ${open} "${baseurl}/basis/${basic_mapping[$2]}"
+    exit
+fi
 
-# setting
-setting=(FONT MAP COLOR DIR FORMAT IO PROJ PS TIME OTHER)
-setting_parse=(font map color dir format io proj ps time misc)
-for i in ${!setting[@]}
-do
-    if [ ${2} = ${setting[$i]} ]; then
-        ${open} "${baseurl}/conf/${setting_parse[$i]}"
-        exit
-    fi
-done
+declare -A setting_mapping=(
+    [FONT]=font
+    [MAP]=map
+    [COLOR]=color
+    [DIR]=dir
+    [FORMAT]=format
+    [IO]=io
+    [PROJ]=proj
+    [PS]=ps
+    [TIME]=time
+    [OTHER]=misc
+)
+
+if [[ -n $2 && ${setting_mapping[$2]+_} ]]; then
+    ${open} "${baseurl}/conf/${setting_mapping[$2]}"
+    exit
+fi
 
 # module
-module=( `gmt --show-modules ` )
-for i in ${!module[@]}
-do
-    if [ ${2} = ${module[$i]} ]; then
-        ${open} "${baseurl}/module/${2}"
+module=( $(gmt --show-modules) )
+
+for m in "${module[@]}"; do
+    if [[ $2 == "$m" || "gmt$2" == "$m" ]]; then
+        ${open} "${baseurl}/module/${2/#gmt/}"
         exit
-    elif [ "gmt${2}" = ${module[$i]} ]; then
-        ${open} "${baseurl}/module/gmt${2}"
-        exit
-    else
-        if [ $(($i+1)) -eq ${#module[@]} ]; then
-            echo -e "\n\033[31m ERROR: No model named ${2} is found. \033[0m"
-            usage
-        fi
     fi
 done
+
+echo -e "\n\033[31m ERROR: No module named ${2} is found. \033[0m"
+usage
