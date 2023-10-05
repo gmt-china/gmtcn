@@ -105,22 +105,43 @@ in
         ;;
 esac
 
-option=(-B -J -R -U -V -X -Y -a -b -c -d -e -f -g -h -i -j -l -n -o -p -q -r -s -t -w -x -:)
-option_parse=(B J R U V XY XY a binary c d e f g h io distcal l n io p q nodereg s t w x colon)
-if [ ! x"$opt" = x ]; then
-    for i in ${!option[@]}
-    do
-
-        if [ ${opt} = ${option[$i]} ]; then
-            ${open} "${baseurl}/option/${option_parse[$i]}"
-            exit
-        else
-            if [ $(($i+1)) -eq ${#option[@]} ]; then
-                echo -e "\n\033[31m ERROR: No option named ${2} is found. \033[0m"
-                usage
-            fi
-        fi
-    done
+# Mapping options to the corresponding URL
+declare -A option_mapping=(
+    [-B]=B
+    [-J]=J
+    [-R]=R
+    [-U]=U
+    [-V]=V
+    [-X]=XY
+    [-Y]=XY
+    [-a]=a
+    [-b]=binary
+    [-c]=c
+    [-d]=d
+    [-e]=e
+    [-f]=f
+    [-g]=g
+    [-h]=h
+    [-i]=io
+    [-j]=distcal
+    [-l]=l
+    [-n]=n
+    [-o]=io
+    [-p]=p
+    [-q]=q
+    [-r]=nodereg
+    [-s]=s
+    [-t]=t
+    [-w]=w
+    [-x]=x
+    [-:]=colon
+)
+if [[ -n $opt && ${option_mapping[$opt]+_} ]]; then
+    ${open} "${baseurl}/option/${option_mapping[$opt]}"
+    exit
+else
+    echo -e "\n\033[31m ERROR: No option named ${opt} is found. \033[0m"
+    usage
 fi
 
 proj=(-JX -JP -JA -JB -JC -JCyl_stere -JD -JE -JF -JG -JH -JI -JJ -JK -JL -JM -JN -JO -JPoly -JQ -JR -JS -JT -JU -JV -JW -JY)
